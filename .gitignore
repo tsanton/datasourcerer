@@ -1,0 +1,16 @@
+*/bin/*
+.env
+*.DS_STORE*
+*.devcontainer/
+*.user.yml
+target/
+dbt_modules/
+dbt_packages/
+logs/
+venv/
+env/
+test.env
+__pycache__
+*dbt/*
+dependabot.yml
+ignore/
