@@ -6,6 +6,8 @@ import (
 	"log/slog"
 
 	"github.com/tsanton/dbt-unit-test-fusionizer/formatter"
+	"github.com/tsanton/dbt-unit-test-fusionizer/formatter/postgres/reader/csvreader"
+	"github.com/tsanton/dbt-unit-test-fusionizer/formatter/postgres/reader/sqlreader"
 	"github.com/tsanton/dbt-unit-test-fusionizer/formatter/postgres/writer/sqlwriter"
 )
 
@@ -22,13 +24,12 @@ func Constructor() func(*slog.Logger, *formatter.Config) *PostgresFormatter {
 	return func(logger *slog.Logger, config *formatter.Config) *PostgresFormatter {
 		var reader formatter.IReader
 		switch config.Filetype {
-		// case formatter.ParserInputTypeSql:
-		// 	reader = sqlreader.NewSqlReader(logger)
-		// case formatter.ParserInputTypeCsv:
-		// 	reader = csvreader.NewCsvReader(logger, config.CSV)
+		case formatter.ParserInputTypeSql:
+			reader = sqlreader.NewSqlReader(logger)
+		case formatter.ParserInputTypeCsv:
+			reader = csvreader.NewCsvReader(logger, config.CSV)
 		default:
-			// panic(fmt.Sprintf("invalid input type: '%s'", config.Filetype))
-			fmt.Printf("invalid input type: '%s'", config.Filetype)
+			panic(fmt.Sprintf("invalid input type: '%s'", config.Filetype))
 		}
 
 		return &PostgresFormatter{
