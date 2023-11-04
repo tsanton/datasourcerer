@@ -17,6 +17,7 @@ var parserTypes = []struct {
 	create func() formatter.ICsvHeader
 }{
 	// Add other parsers as needed
+	{prefix: text.PostgresTextSignaturePrefix, create: func() formatter.ICsvHeader { return &text.Text{} }},
 }
 
 var _ formatter.IReader = &CsvlReader{}
