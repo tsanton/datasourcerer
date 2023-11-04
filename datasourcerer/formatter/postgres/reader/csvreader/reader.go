@@ -17,7 +17,7 @@ import (
 	"github.com/tsanton/dbt-unit-test-fusionizer/formatter/postgres/reader/csvreader/numeric"
 	"github.com/tsanton/dbt-unit-test-fusionizer/formatter/postgres/reader/csvreader/smallint"
 	"github.com/tsanton/dbt-unit-test-fusionizer/formatter/postgres/reader/csvreader/text"
-	"github.com/tsanton/dbt-unit-test-fusionizer/formatter/postgres/reader/csvreader/timentz"
+	timentz "github.com/tsanton/dbt-unit-test-fusionizer/formatter/postgres/reader/csvreader/time/ntz"
 )
 
 var parserTypes = []struct {

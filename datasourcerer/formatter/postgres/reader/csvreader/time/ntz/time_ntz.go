@@ -1,4 +1,4 @@
-package timentz
+package ntz
 
 import (
 	"fmt"
