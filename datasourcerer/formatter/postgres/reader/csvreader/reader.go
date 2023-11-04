@@ -12,6 +12,7 @@ import (
 	"github.com/tsanton/dbt-unit-test-fusionizer/formatter/postgres/reader/csvreader/bigint"
 	"github.com/tsanton/dbt-unit-test-fusionizer/formatter/postgres/reader/csvreader/boolean"
 	"github.com/tsanton/dbt-unit-test-fusionizer/formatter/postgres/reader/csvreader/integer"
+	"github.com/tsanton/dbt-unit-test-fusionizer/formatter/postgres/reader/csvreader/jsonb"
 	"github.com/tsanton/dbt-unit-test-fusionizer/formatter/postgres/reader/csvreader/numeric"
 	"github.com/tsanton/dbt-unit-test-fusionizer/formatter/postgres/reader/csvreader/smallint"
 	"github.com/tsanton/dbt-unit-test-fusionizer/formatter/postgres/reader/csvreader/text"
@@ -28,6 +29,7 @@ var parserTypes = []struct {
 	{prefix: bigint.PostgresBigintSignaturePrefix, create: func() formatter.ICsvHeader { return &bigint.BigInt{} }},
 	{prefix: numeric.PostgresNumericSignaturePrefix, create: func() formatter.ICsvHeader { return &numeric.Numeric{} }},
 	{prefix: boolean.PostgresBooleanSignaturePrefix, create: func() formatter.ICsvHeader { return &boolean.Boolean{} }},
+	{prefix: jsonb.PostgresJsonbSignaturePrefix, create: func() formatter.ICsvHeader { return &jsonb.Jsonb{} }},
 }
 
 var _ formatter.IReader = &CsvlReader{}
