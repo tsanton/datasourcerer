@@ -7,7 +7,7 @@ import (
 	"github.com/tsanton/dbt-unit-test-fusionizer/formatter/postgres/reader/csvreader/integer"
 )
 
-func Test_int(t *testing.T) {
+func Test_Integer(t *testing.T) {
 	tests := []struct {
 		name                 string
 		header               string

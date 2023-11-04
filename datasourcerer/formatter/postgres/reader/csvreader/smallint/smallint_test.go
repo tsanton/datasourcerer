@@ -7,7 +7,7 @@ import (
 	"github.com/tsanton/dbt-unit-test-fusionizer/formatter/postgres/reader/csvreader/smallint"
 )
 
-func Test_smallint(t *testing.T) {
+func Test_Smallint(t *testing.T) {
 	tests := []struct {
 		name                 string
 		header               string
