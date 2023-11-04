@@ -34,7 +34,7 @@ var parserTypes = []struct {
 	{prefix: boolean.PostgresBooleanSignaturePrefix, create: func() formatter.ICsvHeader { return &boolean.Boolean{} }},
 	{prefix: jsonb.PostgresJsonbSignaturePrefix, create: func() formatter.ICsvHeader { return &jsonb.Jsonb{} }},
 	{prefix: date.PostgresDateSignaturePrefix, create: func() formatter.ICsvHeader { return &date.Date{} }},
-	{prefix: timentz.PostgresTimeSignaturePrefix, create: func() formatter.ICsvHeader { return &timentz.Timentz{} }},
+	{prefix: timentz.PostgresTimeWithoutTimezoneSignaturePrefix, create: func() formatter.ICsvHeader { return &timentz.Timentz{} }},
 	{prefix: timetz.PostgresTimeWithTimezoneSignaturePrefix, create: func() formatter.ICsvHeader { return &timetz.Timetz{} }},
 }
 

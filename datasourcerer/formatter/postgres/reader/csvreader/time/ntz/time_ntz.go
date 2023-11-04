@@ -16,9 +16,9 @@ var _ formatter.ICsvHeader = &Timentz{}
 var timeSignatureRegex = regexp.MustCompile(`(?i)^(\w+)\[time\((.*?)\)\]$`)
 
 const (
-	PostgresTimeSignaturePrefix = "[time("
-	defaultTimeFormat           = "15:04:05"
-	defaultPrecision            = 6
+	PostgresTimeWithoutTimezoneSignaturePrefix = "[time("
+	defaultTimeFormat                          = "15:04:05"
+	defaultPrecision                           = 6
 )
 
 var timeFormatMapper = map[string]string{
