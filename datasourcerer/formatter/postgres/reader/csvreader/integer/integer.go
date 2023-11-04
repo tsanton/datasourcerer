@@ -18,7 +18,7 @@ const (
 	PostgresIntegerSignaturePrefix = "[int("
 )
 
-// Integer is signified with "[text()]". It is also default if no [<type>] is spesified
+// Integer is signified with "[int()]".
 type Integer struct {
 	fieldName string
 }
