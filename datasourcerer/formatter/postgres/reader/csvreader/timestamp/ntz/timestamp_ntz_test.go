@@ -24,6 +24,13 @@ func Test_Timestamp_No_Time_Zone_No_Time_Zone(t *testing.T) {
 			expectedWriterOutput: "'2000-12-31 23:59:59'::timestamp(6) as foo",
 		},
 		{
+			name:                 "Test_Timestamp_No_Time_Zone_AnnotationCaseInsensitive",
+			header:               "XxX[TimestamP()]",
+			input:                "2000-12-31 23:59:59",
+			expectedHeaderName:   "XxX",
+			expectedWriterOutput: "'2000-12-31 23:59:59'::timestamp(6) as XxX",
+		},
+		{
 			name:                 "Test_Timestamp_No_Time_Zone_CustomFormat",
 			header:               "Bar[timestamp(yyyy-MM-ddTHH:mm:ssZ)]",
 			input:                "2000-12-31T23:59:59Z",

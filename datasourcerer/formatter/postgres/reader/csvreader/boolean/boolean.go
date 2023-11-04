@@ -11,7 +11,7 @@ import (
 var _ formatter.ICsvHeader = &Boolean{}
 
 // Signature must contains "[boolean" (case insensitive) at any position and ends with ")]"
-var booleanSignatureRegex = regexp.MustCompile(`^(\w+)\[boolean\((.*?)\)\]$`)
+var booleanSignatureRegex = regexp.MustCompile(`(?i)^(\w+)\[boolean\((.*?)\)\]$`)
 
 const PostgresBooleanSignaturePrefix = "[boolean("
 
@@ -43,7 +43,7 @@ func (b *Boolean) GetWriter() func(value interface{}) ([]byte, error) {
 		} else {
 			return nil, fmt.Errorf("invalid boolean value '%s', expected '%s' (true) or '%s' (false)", value, b.trueRepresentation, b.falseRepresentation)
 		}
-		return []byte(fmt.Sprintf("%s::BOOLEAN AS %s", val, strings.ToUpper(b.fieldName))), nil
+		return []byte(fmt.Sprintf("%s::boolean as %s", val, b.fieldName)), nil
 	}
 }
 
@@ -86,7 +86,7 @@ func (b *Boolean) ParseHeader(signature string) error {
 		b.falseRepresentation = defaultFalse
 	}
 
-	b.fieldName = strings.ToUpper(strings.TrimSpace(matches[1]))
+	b.fieldName = strings.TrimSpace(matches[1])
 
 	return nil
 }

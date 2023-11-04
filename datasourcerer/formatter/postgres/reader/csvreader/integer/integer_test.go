@@ -24,6 +24,13 @@ func Test_Integer(t *testing.T) {
 			expectedWriterOutput: "10::int as foo",
 		},
 		{
+			name:                 "Test_Integer_Annotated",
+			header:               "Bar[InT()]",
+			input:                "10",
+			expectedHeaderName:   "Bar",
+			expectedWriterOutput: "10::int as Bar",
+		},
+		{
 			name:          "Test_Integer_Exception_InvalidInteger",
 			header:        "foo[int()]",
 			input:         "not-a-number",

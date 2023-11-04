@@ -24,7 +24,7 @@ func Test_Date(t *testing.T) {
 			expectedWriterOutput: "'2000-12-31'::date as foo",
 		},
 		{
-			name:                 "Test_Date_DefaultAnnotationCaseInsensitive",
+			name:                 "Test_Date_AnnotationCaseInsensitive",
 			header:               "Bar[DaTe()]",
 			input:                "2000-12-31",
 			expectedHeaderName:   "Bar",

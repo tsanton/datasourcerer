@@ -25,11 +25,19 @@ func Test_Jsonb(t *testing.T) {
 		},
 		{
 			name:                 "Test_Jsonb_NoAnnotation",
-			header:               "SomeFoo[jsonb()]",
+			header:               "Bar[jsonb()]",
 			input:                `{"foo":"bar"}`,
-			expectedHeaderName:   "SomeFoo",
-			expectedWriterOutput: `'{"foo":"bar"}'::jsonb as SomeFoo`,
+			expectedHeaderName:   "Bar",
+			expectedWriterOutput: `'{"foo":"bar"}'::jsonb as Bar`,
 		},
+		{
+			name:                 "Test_Jsonb_AnnotationCaseInsensitive",
+			header:               "qUx[JSONb()]",
+			input:                `{"foo":"bar"}`,
+			expectedHeaderName:   "qUx",
+			expectedWriterOutput: `'{"foo":"bar"}'::jsonb as qUx`,
+		},
+
 		{
 			name:          "Test_Jsonb_Excepton_OneExtraComma",
 			header:        "foo[jsonb(,)]",

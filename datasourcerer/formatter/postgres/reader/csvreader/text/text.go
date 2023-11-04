@@ -11,7 +11,7 @@ import (
 var _ formatter.ICsvHeader = &Text{}
 
 // Signature must contains "[varchar" (case insensitive) at any position and ends with ")]"
-var textSignatureRegex = regexp.MustCompile(`^(\w+)\[text\((.*?)\)\]$`)
+var textSignatureRegex = regexp.MustCompile(`(?i)^(\w+)\[text\((.*?)\)\]$`)
 
 const (
 	PostgresTextSignaturePrefix = "[text("

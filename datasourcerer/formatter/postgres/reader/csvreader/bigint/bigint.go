@@ -12,7 +12,7 @@ import (
 var _ formatter.ICsvHeader = &BigInt{}
 
 // Signature must contains "[varchar" (case insensitive) at any position and ends with ")]"
-var bigintSignatureRegex = regexp.MustCompile(`^(\w+)\[bigint\((.*?)\)\]$`)
+var bigintSignatureRegex = regexp.MustCompile(`(?i)^(\w+)\[bigint\((.*?)\)\]$`)
 
 const (
 	PostgresBigintSignaturePrefix = "[bigint("

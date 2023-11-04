@@ -12,7 +12,7 @@ import (
 var _ formatter.ICsvHeader = &Numeric{}
 
 // Signature must contains "[numeric" (case insensitive) at any position and ends with ")]"
-var numericSignatureRegex = regexp.MustCompile(`^(\w+)\[numeric\((.*?)\)\]$`)
+var numericSignatureRegex = regexp.MustCompile(`(?i)^(\w+)\[numeric\((.*?)\)\]$`)
 
 const (
 	PostgresNumericSignaturePrefix = "[numeric("

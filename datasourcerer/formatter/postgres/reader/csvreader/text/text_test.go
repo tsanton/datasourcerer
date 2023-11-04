@@ -17,6 +17,13 @@ func Test_Text(t *testing.T) {
 		expectedError        string
 	}{
 		{
+			name:                 "Test_Text_NoAnnotation",
+			header:               "Bar",
+			input:                "bar",
+			expectedHeaderName:   "Bar",
+			expectedWriterOutput: "'bar'::text as Bar",
+		},
+		{
 			name:                 "Test_Text_DefaultAnnotation",
 			header:               "foo[text()]",
 			input:                "bar",
@@ -24,11 +31,11 @@ func Test_Text(t *testing.T) {
 			expectedWriterOutput: "'bar'::text as foo",
 		},
 		{
-			name:                 "Test_Text_NoAnnotation",
-			header:               "SomeFoo",
+			name:                 "Test_Text_AnnotationCaseInsensitive",
+			header:               "qUx[TexT()]",
 			input:                "bar",
-			expectedHeaderName:   "SomeFoo",
-			expectedWriterOutput: "'bar'::text as SomeFoo",
+			expectedHeaderName:   "qUx",
+			expectedWriterOutput: "'bar'::text as qUx",
 		},
 		{
 			name:          "Test_Text_Excepton_OneExtraComma",

@@ -24,6 +24,13 @@ func Test_Bigint(t *testing.T) {
 			expectedWriterOutput: "10::bigint as foo",
 		},
 		{
+			name:                 "Test_Bigint_AnnotationCaseInsensitive",
+			header:               "Bar[BigInt()]",
+			input:                "10",
+			expectedHeaderName:   "Bar",
+			expectedWriterOutput: "10::bigint as Bar",
+		},
+		{
 			name:          "Test_Bigint_Exception_InvalidInteger",
 			header:        "foo[bigint()]",
 			input:         "not-a-number",

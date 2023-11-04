@@ -12,7 +12,7 @@ import (
 var _ formatter.ICsvHeader = &SmallInt{}
 
 // Signature must contains "[varchar" (case insensitive) at any position and ends with ")]"
-var intSignatureRegex = regexp.MustCompile(`^(\w+)\[smallint\((.*?)\)\]$`)
+var intSignatureRegex = regexp.MustCompile(`(?i)^(\w+)\[smallint\((.*?)\)\]$`)
 
 const (
 	PostgresSmallintSignaturePrefix = "[smallint(("

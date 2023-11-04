@@ -24,6 +24,13 @@ func Test_Smallint(t *testing.T) {
 			expectedWriterOutput: "10::smallint as foo",
 		},
 		{
+			name:                 "Test_Smallint_Annotated",
+			header:               "Bar[SmallInt()]",
+			input:                "10",
+			expectedHeaderName:   "Bar",
+			expectedWriterOutput: "10::smallint as Bar",
+		},
+		{
 			name:          "Test_Smallint_Exception_InvalidInteger",
 			header:        "foo[smallint()]",
 			input:         "not-a-number",

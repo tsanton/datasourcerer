@@ -12,7 +12,7 @@ import (
 var _ formatter.ICsvHeader = &Integer{}
 
 // Signature must contains "[varchar" (case insensitive) at any position and ends with ")]"
-var intSignatureRegex = regexp.MustCompile(`^(\w+)\[int\((.*?)\)\]$`)
+var intSignatureRegex = regexp.MustCompile(`(?i)^(\w+)\[int\((.*?)\)\]$`)
 
 const (
 	PostgresIntegerSignaturePrefix = "[int("

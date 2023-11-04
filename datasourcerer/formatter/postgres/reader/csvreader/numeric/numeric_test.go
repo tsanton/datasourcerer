@@ -24,11 +24,18 @@ func Test_Numeric(t *testing.T) {
 			expectedWriterOutput: "12.2::numeric as foo",
 		},
 		{
-			name:                 "Test_Numeric_Integer_Annotated",
-			header:               "foo[numeric(14,0)]",
+			name:                 "Test_Numeric_IntegerAnnotated",
+			header:               "Bar[numeric(14,0)]",
 			input:                "10",
-			expectedHeaderName:   "foo",
-			expectedWriterOutput: "10::numeric(14,0) as foo",
+			expectedHeaderName:   "Bar",
+			expectedWriterOutput: "10::numeric(14,0) as Bar",
+		},
+		{
+			name:                 "Test_Numeric_AnnotationCaseInsensitive",
+			header:               "qUx[NumeriC(14,0)]",
+			input:                "10",
+			expectedHeaderName:   "qUx",
+			expectedWriterOutput: "10::numeric(14,0) as qUx",
 		},
 		{
 			name:          "Test_Numeric_Exception_AnnotatedPrecision_UnspecifiedScale",
