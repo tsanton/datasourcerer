@@ -17,6 +17,7 @@ import (
 	"github.com/tsanton/dbt-unit-test-fusionizer/formatter/postgres/reader/csvreader/numeric"
 	"github.com/tsanton/dbt-unit-test-fusionizer/formatter/postgres/reader/csvreader/smallint"
 	"github.com/tsanton/dbt-unit-test-fusionizer/formatter/postgres/reader/csvreader/text"
+	"github.com/tsanton/dbt-unit-test-fusionizer/formatter/postgres/reader/csvreader/timentz"
 )
 
 var parserTypes = []struct {
@@ -32,6 +33,7 @@ var parserTypes = []struct {
 	{prefix: boolean.PostgresBooleanSignaturePrefix, create: func() formatter.ICsvHeader { return &boolean.Boolean{} }},
 	{prefix: jsonb.PostgresJsonbSignaturePrefix, create: func() formatter.ICsvHeader { return &jsonb.Jsonb{} }},
 	{prefix: date.PostgresDateSignaturePrefix, create: func() formatter.ICsvHeader { return &date.Date{} }},
+	{prefix: timentz.PostgresTimeSignaturePrefix, create: func() formatter.ICsvHeader { return &timentz.Timentz{} }},
 }
 
 var _ formatter.IReader = &CsvlReader{}
