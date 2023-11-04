@@ -19,7 +19,7 @@ const (
 	defaultBytes                    = 16777216
 )
 
-// Varchar are signified with "[varchar]". It is also default if no [<type>] is spesified
+// Varchar is signified with "[varchar()]". It is also default if no [<type>] is spesified
 type Varchar struct {
 	fieldName string
 	bytes     int
