@@ -30,6 +30,18 @@ func Test_int(t *testing.T) {
 			expectedError: "error converting value 'not-a-number' to integer",
 		},
 		{
+			name:          "Test_Integer_Exception_IntegerOutOfRangeAbove",
+			header:        "foo[int()]",
+			input:         "2147483649",
+			expectedError: "value 2147483649 is out of range for integer, must be in range -2.147.483.648 to 2.147.483.647",
+		},
+		{
+			name:          "Test_Integer_Exception_IntegerOutOfRangeBelow",
+			header:        "foo[int()]",
+			input:         "-2147483649",
+			expectedError: "value -2147483649 is out of range for integer, must be in range -2.147.483.648 to 2.147.483.647",
+		},
+		{
 			name:          "Test_Integer_Exception_OneExtraComma",
 			header:        "foo[int(,)]",
 			expectedError: "invalid signature 'foo[int(,)]'. Expected ()",

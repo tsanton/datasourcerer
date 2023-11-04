@@ -31,11 +31,14 @@ func (m *Integer) GetName() string {
 // GetWriter implements formatter.ICsvHeader.
 func (v *Integer) GetWriter() func(value interface{}) ([]byte, error) {
 	return func(value interface{}) ([]byte, error) {
-		_, err := strconv.ParseInt(value.(string), 10, 64)
+		val, err := strconv.ParseInt(value.(string), 10, 64)
 		if err != nil {
 			return nil, fmt.Errorf("error converting value '%s' to integer", value.(string))
 		}
-		return []byte(fmt.Sprintf("%v::int as %s", value, v.fieldName)), nil
+		if val < -2147483648 || val > 2147483647 {
+			return nil, fmt.Errorf("value %d is out of range for integer, must be in range -2.147.483.648 to 2.147.483.647", val)
+		}
+		return []byte(fmt.Sprintf("%d::int as %s", val, v.fieldName)), nil
 	}
 }
 
