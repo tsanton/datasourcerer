@@ -2,11 +2,13 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log/slog"
 	"os"
 	"strings"
 
 	"github.com/tsanton/dbt-unit-test-fusionizer/datasourceparser"
+	"github.com/tsanton/dbt-unit-test-fusionizer/formatter/postgres"
 	"github.com/tsanton/dbt-unit-test-fusionizer/formatter/snowflake"
 	"github.com/tsanton/dbt-unit-test-fusionizer/generator"
 	"github.com/tsanton/dbt-unit-test-fusionizer/templatecrawler"
@@ -66,20 +68,37 @@ func main() {
 
 	c := make(chan templatecrawler.DataSourceReference)
 	crawler := templatecrawler.NewTestTemplateCrawler(logger, run.crawlers, run.templateFileDir)
-	parser := datasourceparser.NewDatasourceParser(
-		logger,
-		run.parsers,
-		&run.config,
-		snowflake.Constructor(),
-	)
 
-	go crawler.Crawl(c)
-	parser.Parse(c)
+	var dataSources *map[string]datasourceparser.DataSourceFile
+	switch run.config.Dialect {
+	case "snowflake":
+		parser := datasourceparser.NewDatasourceParser(
+			logger,
+			run.parsers,
+			&run.config,
+			snowflake.Constructor(),
+		)
+		go crawler.Crawl(c)
+		parser.Parse(c)
+		dataSources = parser.GetDataSources()
+	case "postgres":
+		parser := datasourceparser.NewDatasourceParser(
+			logger,
+			run.parsers,
+			&run.config,
+			postgres.Constructor(),
+		)
+		go crawler.Crawl(c)
+		parser.Parse(c)
+		dataSources = parser.GetDataSources()
+	default:
+		logger.Error(fmt.Sprintf("dialect type '%s' not supported.", run.config.Dialect))
+		os.Exit(1)
+	}
 
 	//Generate the dbt files with formatted inputted data
 	templates := crawler.GetTestTemplates()
-	data := parser.GetDataSources()
 	generator := generator.NewTestGenerator(logger, run.generators, run.testFileDir)
-	_ = generator.Generate(templates, data)
+	_ = generator.Generate(templates, dataSources)
 	logger.Info("Finished")
 }
