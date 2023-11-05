@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/tsanton/datasourcerer/compare/0.2.0...0.2.1) (2023-11-05)
+
+
+### Bug Fixes
+
+* added postgres parser to main ([38fc053](https://github.com/tsanton/datasourcerer/commit/38fc05383586c75666278ed6fc3f587882875733))
+
 ## [0.2.0](https://github.com/tsanton/datasourcerer/compare/0.1.0...0.2.0) (2023-11-05)
 
 
