@@ -24,6 +24,13 @@ func Test_Timestamp_Ltz(t *testing.T) {
 			expectedWriterOutput: "'2000-12-31 23:59:59'::TIMESTAMP_LTZ(9) AS FOO",
 		},
 		{
+			name:                 "Test_Timestamp_Ltz_AnnotationCaseInsensitive",
+			header:               "foo[Timestamp_LTZ()]",
+			input:                "2000-12-31 23:59:59",
+			expectedHeaderName:   "FOO",
+			expectedWriterOutput: "'2000-12-31 23:59:59'::TIMESTAMP_LTZ(9) AS FOO",
+		},
+		{
 			name:                 "Test_Timestamp_Ltz_CustomFormat",
 			header:               "foo[timestamp_ltz(yyyy-MM-ddTHH:mm:ssZ)]",
 			input:                "2000-12-31T23:59:59Z",
@@ -36,13 +43,6 @@ func Test_Timestamp_Ltz(t *testing.T) {
 			input:                "2000-12-31 23:59:59",
 			expectedHeaderName:   "FOO",
 			expectedWriterOutput: "'2000-12-31 23:59:59'::TIMESTAMP_LTZ(3) AS FOO",
-		},
-		{
-			name:                 "Test_Timestamp_Ltz_AnnotationCaseInsensitive",
-			header:               "foo[Timestamp_LTZ()]",
-			input:                "2000-12-31 23:59:59",
-			expectedHeaderName:   "FOO",
-			expectedWriterOutput: "'2000-12-31 23:59:59'::TIMESTAMP_LTZ(9) AS FOO",
 		},
 		{
 			name:          "Test_Timestamp_Ltz_Excepton_OneExtraComma",

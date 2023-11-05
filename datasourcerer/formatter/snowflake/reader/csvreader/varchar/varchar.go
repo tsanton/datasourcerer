@@ -12,7 +12,7 @@ import (
 var _ formatter.ICsvHeader = &Varchar{}
 
 // Signature must contains "[varchar" (case insensitive) at any position and ends with ")]"
-var varcharSignatureRegex = regexp.MustCompile(`^(\w+)\[varchar\((.*?)\)\]$`)
+var varcharSignatureRegex = regexp.MustCompile(`(?i)^(\w+)\[varchar\((.*?)\)\]$`)
 
 const (
 	SnowflakeVarcharSignaturePrefix = "[varchar("

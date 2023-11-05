@@ -24,6 +24,13 @@ func Test_Boolean(t *testing.T) {
 			expectedWriterOutput: "true::BOOLEAN AS FOO",
 		},
 		{
+			name:                 "Test_Boolean_AnnotationCaseInsensitive",
+			header:               "Bar[BooleaN(T,F)]",
+			input:                "T",
+			expectedHeaderName:   "BAR",
+			expectedWriterOutput: "true::BOOLEAN AS BAR",
+		},
+		{
 			name:                 "Test_Boolean_AnnotatedTrue",
 			header:               "foo[boolean(T,F)]",
 			input:                "T",

@@ -24,6 +24,13 @@ func Test_Timestamp_Ntz(t *testing.T) {
 			expectedWriterOutput: "'2000-12-31 23:59:59'::TIMESTAMP_NTZ(9) AS FOO",
 		},
 		{
+			name:                 "Test_Timestamp_Ntz_AnnotationCaseInsensitive",
+			header:               "Bar[Timestamp_NTZ()]",
+			input:                "2000-12-31 23:59:59",
+			expectedHeaderName:   "BAR",
+			expectedWriterOutput: "'2000-12-31 23:59:59'::TIMESTAMP_NTZ(9) AS BAR",
+		},
+		{
 			name:                 "Test_Timestamp_Ntz_CustomFormat",
 			header:               "foo[timestamp_ntz(yyyy-MM-ddTHH:mm:ssZ)]",
 			input:                "2000-12-31T23:59:59Z",
@@ -36,13 +43,6 @@ func Test_Timestamp_Ntz(t *testing.T) {
 			input:                "2000-12-31 23:59:59",
 			expectedHeaderName:   "FOO",
 			expectedWriterOutput: "'2000-12-31 23:59:59'::TIMESTAMP_NTZ(3) AS FOO",
-		},
-		{
-			name:                 "Test_Timestamp_Ntz_AnnotationCaseInsensitive",
-			header:               "foo[Timestamp_NTZ()]",
-			input:                "2000-12-31 23:59:59",
-			expectedHeaderName:   "FOO",
-			expectedWriterOutput: "'2000-12-31 23:59:59'::TIMESTAMP_NTZ(9) AS FOO",
 		},
 		{
 			name:          "Test_Timestamp_Ntz_Excepton_OneExtraComma",

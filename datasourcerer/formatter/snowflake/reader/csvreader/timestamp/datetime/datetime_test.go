@@ -24,6 +24,13 @@ func Test_Datetime(t *testing.T) {
 			expectedWriterOutput: "'2000-12-31 23:59:59'::DATETIME(9) AS FOO",
 		},
 		{
+			name:                 "Test_Datetime_AnnotationCaseInsensitive",
+			header:               "Bar[DatetimE()]",
+			input:                "2000-12-31 23:59:59",
+			expectedHeaderName:   "BAR",
+			expectedWriterOutput: "'2000-12-31 23:59:59'::DATETIME(9) AS BAR",
+		},
+		{
 			name:                 "Test_Datetime_CustomFormat",
 			header:               "foo[datetime(yyyy-MM-ddTHH:mm:ssZ)]",
 			input:                "2000-12-31T23:59:59Z",
@@ -36,13 +43,6 @@ func Test_Datetime(t *testing.T) {
 			input:                "2000-12-31 23:59:59",
 			expectedHeaderName:   "FOO",
 			expectedWriterOutput: "'2000-12-31 23:59:59'::DATETIME(3) AS FOO",
-		},
-		{
-			name:                 "Test_Datetime_AnnotationCaseInsensitive",
-			header:               "foo[DateTime()]",
-			input:                "2000-12-31 23:59:59",
-			expectedHeaderName:   "FOO",
-			expectedWriterOutput: "'2000-12-31 23:59:59'::DATETIME(9) AS FOO",
 		},
 		{
 			name:          "Test_Datetime_Excepton_OneExtraComma",

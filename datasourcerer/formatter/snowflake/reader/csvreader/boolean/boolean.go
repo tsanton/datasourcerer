@@ -11,7 +11,7 @@ import (
 var _ formatter.ICsvHeader = &Boolean{}
 
 // Signature must contains "[boolean" (case insensitive) at any position and ends with ")]"
-var snowflakeBooleanSignatureRegex = regexp.MustCompile(`^(\w+)\[boolean\((.*?)\)\]$`)
+var booleanSignatureRegex = regexp.MustCompile(`(?i)^(\w+)\[boolean\((.*?)\)\]$`)
 
 const SnowflakeBooleanSignaturePrefix = "[boolean("
 
@@ -59,7 +59,7 @@ func (b *Boolean) ParseHeader(signature string) error {
 	}
 
 	// Extract the regex matches// Extract the regex matches
-	matches := snowflakeBooleanSignatureRegex.FindStringSubmatch(signature)
+	matches := booleanSignatureRegex.FindStringSubmatch(signature)
 
 	if len(matches) != 3 {
 		return fmt.Errorf("invalid signature '%s'. Expected () or (<optional-true-value>,<optional-false-value>)", signature)

@@ -32,7 +32,7 @@ func Test_Timestamp_TimeZone_ParseCsvHeaders(t *testing.T) {
 	}
 }
 
-func Test_Timestamp_TimeZone_ReadAnnotated(t *testing.T) {
+func Test_Timestamp_TimeZone_ReadCsv(t *testing.T) {
 	t.Parallel()
 	data := strings.TrimSpace(`
 "CreatedAt[timestamp_tz()]","UpdatedAt[timestamp_tz(yyyy-MM-ddTHH:mm:ssZ,4)]","DeletedAt[timestamp_tz(MM/dd/yyyy HH:mm:ss,3)]"

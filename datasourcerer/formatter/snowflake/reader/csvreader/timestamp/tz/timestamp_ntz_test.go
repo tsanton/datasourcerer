@@ -24,6 +24,13 @@ func Test_Timestamp_Tz(t *testing.T) {
 			expectedWriterOutput: "'2000-12-31 23:59:59'::TIMESTAMP_TZ(9) AS FOO",
 		},
 		{
+			name:                 "Test_Timestamp_Tz_AnnotationCaseInsensitive",
+			header:               "Bar[timestamp_tz()]",
+			input:                "2000-12-31 23:59:59",
+			expectedHeaderName:   "BAR",
+			expectedWriterOutput: "'2000-12-31 23:59:59'::TIMESTAMP_TZ(9) AS BAR",
+		},
+		{
 			name:                 "Test_Timestamp_Tz_CustomFormat",
 			header:               "foo[timestamp_tz(yyyy-MM-ddTHH:mm:ssZ)]",
 			input:                "2000-12-31T23:59:59Z",
@@ -37,13 +44,7 @@ func Test_Timestamp_Tz(t *testing.T) {
 			expectedHeaderName:   "FOO",
 			expectedWriterOutput: "'2000-12-31 23:59:59'::TIMESTAMP_TZ(3) AS FOO",
 		},
-		{
-			name:                 "Test_Timestamp_Tz_AnnotationCaseInsensitive",
-			header:               "foo[timestamp_tz()]",
-			input:                "2000-12-31 23:59:59",
-			expectedHeaderName:   "FOO",
-			expectedWriterOutput: "'2000-12-31 23:59:59'::TIMESTAMP_TZ(9) AS FOO",
-		},
+
 		{
 			name:          "Test_Timestamp_Tz_Excepton_OneExtraComma",
 			header:        "foo[timestamp_tz(,,)]",

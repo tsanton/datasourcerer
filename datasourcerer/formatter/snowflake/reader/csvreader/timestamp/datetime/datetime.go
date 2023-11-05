@@ -10,11 +10,12 @@ import (
 	"time"
 
 	"github.com/tsanton/dbt-unit-test-fusionizer/formatter"
+	"github.com/tsanton/dbt-unit-test-fusionizer/formatter/snowflake/reader/csvreader/timestamp/utils"
 )
 
 var _ formatter.ICsvHeader = &Datetime{}
 
-// Signature must contains "[boolean" (case insensitive) at any position and ends with ")]"
+// Signature must contains "[datetime" (case insensitive) at any position and ends with ")]"
 var datetimeSignatureRegex = regexp.MustCompile(`(?i)^(\w+)\[datetime\((.*?)\)\]$`)
 
 const (
@@ -22,35 +23,6 @@ const (
 	defaultTimestampFormat           = "2006-01-02 15:04:05"
 	defaultPrecision                 = 9
 )
-
-var timestampFormatMapper = map[string]string{
-	"yyyy-MM-dd HH:mm:ss":      "2006-01-02 15:04:05",      // Example: "2023-10-24 14:30:45"
-	"yyyy-MM-ddThh:mm:ssZ":     "2006-01-02T03:04:05Z",     // Example: "2023-10-24T02:30:45Z"
-	"yyyy-MM-ddTHH:mm:ssZ":     "2006-01-02T15:04:05Z",     // Example: "2023-10-24T14:30:45Z"
-	"yyyy-MM-dd HH:mm:ss.SSSZ": "2006-01-02 15:04:05.000Z", // Example: "2023-10-24 14:30:45.123Z"
-	"yyyy-MM-ddTHH:mm:ss.SSSZ": "2006-01-02T15:04:05.000Z", // Example: "2023-10-24T14:30:45.123Z"
-	"yyyy-MM-dd HH:mm:ss.SSS":  "2006-01-02 15:04:05.000",  // Example: "2023-10-24 14:30:45.123"
-	"yyyy-MM-ddThh:mm:ss":      "2006-01-02T03:04:05",      // Example: "2023-10-24T02:30:45"
-	"yyyy-MM-ddTHH:mm:ss":      "2006-01-02T15:04:05",      // Example: "2023-10-24T14:30:45"
-	"yyyy/MM/dd HH:mm:ss":      "2006/01/02 15:04:05",      // Example: "2023/10/24 14:30:45"
-	"yyyy/MM/dd HH:mm:ss.SSSZ": "2006/01/02 15:04:05.000Z", // Example: "2023/10/24 14:30:45.123Z"
-	"yyyy/MM/ddTHH:mm:ss.SSSZ": "2006/01/02T15:04:05.000Z", // Example: "2023/10/24T14:30:45.123Z"
-	"yyyy/MM/dd HH:mm:ss.SSS":  "2006/01/02 15:04:05.000",  // Example: "2023/10/24 14:30:45.123"
-	"yyyy/MM/ddThh:mm:ss":      "2006/01/02T03:04:05",      // Example: "2023/10/24T02:30:45"
-	"yyyy/MM/ddTHH:mm:ss":      "2006/01/02T15:04:05",      // Example: "2023/10/24T14:30:45"
-	"MM-dd-yyyy HH:mm:ss":      "01-02-2006 15:04:05",      // Example: "10-24-2023 14:30:45"
-	"MM-dd-yyyy HH:mm:ss.SSSZ": "01-02-2006 15:04:05.000Z", // Example: "10-24-2023 14:30:45.123Z"
-	"MM-dd-yyyyTHH:mm:ss.SSSZ": "01-02-2006T15:04:05.000Z", // Example: "10-24-2023T14:30:45.123Z"
-	"MM-dd-yyyy HH:mm:ss.SSS":  "01-02-2006 15:04:05.000",  // Example: "10-24-2023 14:30:45.123"
-	"MM-dd-yyyyThh:mm:ss":      "01-02-2006T03:04:05",      // Example: "10-24-2023T02:30:45"
-	"MM-dd-yyyyTHH:mm:ss":      "01-02-2006T15:04:05",      // Example: "10-24-2023T14:30:45"
-	"MM/dd/yyyy HH:mm:ss":      "01/02/2006 15:04:05",      // Example: "10/24/2023 14:30:45"
-	"MM/dd/yyyy HH:mm:ss.SSSZ": "01/02/2006 15:04:05.000Z", // Example: "10/24/2023 14:30:45.123Z"
-	"MM/dd/yyyyTHH:mm:ss.SSSZ": "01/02/2006T15:04:05.000Z", // Example: "10/24/2023T14:30:45.123Z"
-	"MM/dd/yyyy HH:mm:ss.SSS":  "01/02/2006 15:04:05.000",  // Example: "10/24/2023 14:30:45.123"
-	"MM/dd/yyyyThh:mm:ss":      "01/02/2006T03:04:05",      // Example: "10/24/2023T02:30:45"
-	"MM/dd/yyyyTHH:mm:ss":      "01/02/2006T15:04:05",      // Example: "10/24/2023T14:30:45"
-}
 
 type Datetime struct {
 	fieldName          string
@@ -111,7 +83,7 @@ func (t *Datetime) ParseHeader(signature string) error {
 
 	// Parse optional format
 	if len(params) > 0 && strings.TrimSpace(params[0]) != "" {
-		if format, ok := timestampFormatMapper[strings.TrimSpace(params[0])]; ok {
+		if format, ok := utils.TimestampFormatMapper[strings.TrimSpace(params[0])]; ok {
 			t.format = format
 		} else {
 			t.format = strings.TrimSpace(params[0])

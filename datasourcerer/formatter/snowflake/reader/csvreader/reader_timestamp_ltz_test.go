@@ -32,7 +32,7 @@ func Test_Timestamp_LocalTimeZone_ParseCsvHeaders(t *testing.T) {
 	}
 }
 
-func Test_Timestamp_LocalTimeZone_ReadAnnotated(t *testing.T) {
+func Test_Timestamp_LocalTimeZone_ReadCsv(t *testing.T) {
 	t.Parallel()
 	data := strings.TrimSpace(`
 "CreatedAt[timestamp_ltz()]","UpdatedAt[timestamp_ltz(yyyy-MM-ddTHH:mm:ssZ,4)]","DeletedAt[timestamp_ltz(MM/dd/yyyy HH:mm:ss,3)]"

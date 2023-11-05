@@ -32,7 +32,7 @@ func Test_Number_ParseCsvHeaders(t *testing.T) {
 	}
 }
 
-func Test_Number_Read_Annotated(t *testing.T) {
+func Test_Number_ReadCsv(t *testing.T) {
 	t.Parallel()
 	data := strings.TrimSpace(`
 "Age[number()]","Height[number(4)]","Weight[number(, 3)]"
