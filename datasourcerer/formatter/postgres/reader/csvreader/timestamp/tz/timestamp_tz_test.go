@@ -93,7 +93,7 @@ func Test_Timestamp_Time_Zone(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			header := &tz.Timestamptz{}
+			header := &tz.TimestampTz{}
 			err := header.ParseHeader(tt.header)
 
 			if tt.expectedError != "" {

@@ -94,7 +94,7 @@ func Test_Time_Tz(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			header := &tz.Timetz{}
+			header := &tz.TimeTz{}
 			err := header.ParseHeader(tt.header)
 
 			if tt.expectedError != "" {

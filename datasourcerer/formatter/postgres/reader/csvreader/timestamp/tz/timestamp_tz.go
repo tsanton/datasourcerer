@@ -10,7 +10,7 @@ import (
 	"github.com/tsanton/dbt-unit-test-fusionizer/formatter"
 )
 
-var _ formatter.ICsvHeader = &Timestamptz{}
+var _ formatter.ICsvHeader = &TimestampTz{}
 
 // Signature must contains "[boolean" (case insensitive) at any position and ends with ")]"
 var timestampWithTimeZoneSignatureRegex = regexp.MustCompile(`(?i)^(\w+)\[timestamp_tz\((.*?)\)\]$`)
@@ -50,19 +50,19 @@ var timestampFormatMapper = map[string]string{
 	"MM/dd/yyyyTHH:mm:ss":      "01/02/2006T15:04:05",      // Example: "10/24/2023T14:30:45"
 }
 
-type Timestamptz struct {
+type TimestampTz struct {
 	fieldName          string
 	format             string
 	timestampSignature string
 }
 
 // GetName implements formatter.ICsvHeader
-func (t *Timestamptz) GetName() string {
+func (t *TimestampTz) GetName() string {
 	return t.fieldName
 }
 
 // GetWriter implements formatter.ICsvHeader.
-func (t *Timestamptz) GetWriter() func(value interface{}) ([]byte, error) {
+func (t *TimestampTz) GetWriter() func(value interface{}) ([]byte, error) {
 	return func(value interface{}) ([]byte, error) {
 		// Parse the timestamp based on the specified format
 		timestamp, err := time.Parse(t.format, value.(string))
@@ -80,7 +80,7 @@ func (t *Timestamptz) GetWriter() func(value interface{}) ([]byte, error) {
 
 // TODO: refactor
 // GetWriter implements formatter.ICsvHeader.
-func (t *Timestamptz) ParseHeader(signature string) error {
+func (t *TimestampTz) ParseHeader(signature string) error {
 	if !strings.HasSuffix(signature, "]") {
 		return fmt.Errorf("invalid signature '%s'. Signature should be of the form <name>[timestamp_tz(<optional-format>,<optional-precision>)]", signature)
 	}

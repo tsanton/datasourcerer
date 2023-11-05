@@ -36,10 +36,10 @@ var parserTypes = []struct {
 	{prefix: boolean.PostgresBooleanSignaturePrefix, create: func() formatter.ICsvHeader { return &boolean.Boolean{} }},
 	{prefix: jsonb.PostgresJsonbSignaturePrefix, create: func() formatter.ICsvHeader { return &jsonb.Jsonb{} }},
 	{prefix: date.PostgresDateSignaturePrefix, create: func() formatter.ICsvHeader { return &date.Date{} }},
-	{prefix: timentz.PostgresTimeWithoutTimezoneSignaturePrefix, create: func() formatter.ICsvHeader { return &timentz.Timentz{} }},
-	{prefix: timetz.PostgresTimeWithTimezoneSignaturePrefix, create: func() formatter.ICsvHeader { return &timetz.Timetz{} }},
-	{prefix: timestampntz.PostgresTimestampNoTimeZoneSignaturePrefix, create: func() formatter.ICsvHeader { return &timestampntz.Timestampntz{} }},
-	{prefix: timestamptz.PostgresTimestampWithTimeZoneSignaturePrefix, create: func() formatter.ICsvHeader { return &timestamptz.Timestamptz{} }},
+	{prefix: timentz.PostgresTimeWithoutTimezoneSignaturePrefix, create: func() formatter.ICsvHeader { return &timentz.TimeNtz{} }},
+	{prefix: timetz.PostgresTimeWithTimezoneSignaturePrefix, create: func() formatter.ICsvHeader { return &timetz.TimeTz{} }},
+	{prefix: timestampntz.PostgresTimestampNoTimeZoneSignaturePrefix, create: func() formatter.ICsvHeader { return &timestampntz.TimestampNtz{} }},
+	{prefix: timestamptz.PostgresTimestampWithTimeZoneSignaturePrefix, create: func() formatter.ICsvHeader { return &timestamptz.TimestampTz{} }},
 }
 
 var _ formatter.IReader = &CsvlReader{}
