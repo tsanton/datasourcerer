@@ -13,7 +13,10 @@ import (
 	"github.com/tsanton/dbt-unit-test-fusionizer/formatter/snowflake/reader/csvreader/date"
 	"github.com/tsanton/dbt-unit-test-fusionizer/formatter/snowflake/reader/csvreader/number"
 	stime "github.com/tsanton/dbt-unit-test-fusionizer/formatter/snowflake/reader/csvreader/time"
-	"github.com/tsanton/dbt-unit-test-fusionizer/formatter/snowflake/reader/csvreader/timestamp"
+	dtd "github.com/tsanton/dbt-unit-test-fusionizer/formatter/snowflake/reader/csvreader/timestamp/datetime"
+	dtltz "github.com/tsanton/dbt-unit-test-fusionizer/formatter/snowflake/reader/csvreader/timestamp/ltz"
+	dtntz "github.com/tsanton/dbt-unit-test-fusionizer/formatter/snowflake/reader/csvreader/timestamp/ntz"
+	dttz "github.com/tsanton/dbt-unit-test-fusionizer/formatter/snowflake/reader/csvreader/timestamp/tz"
 	"github.com/tsanton/dbt-unit-test-fusionizer/formatter/snowflake/reader/csvreader/varchar"
 )
 
@@ -26,8 +29,11 @@ var parserTypes = []struct {
 	{prefix: boolean.SnowflakeBooleanSignaturePrefix, create: func() formatter.ICsvHeader { return &boolean.Boolean{} }},
 	{prefix: number.SnowflakeNumberSignaturePrefix, create: func() formatter.ICsvHeader { return &number.Number{} }},
 	{prefix: date.SnowflakeDateSignaturePrefix, create: func() formatter.ICsvHeader { return &date.Date{} }},
-	{prefix: timestamp.SnowflakeTimestampSignaturePrefix, create: func() formatter.ICsvHeader { return &timestamp.Timestamp{} }},
 	{prefix: stime.SnowflakeTimeSignaturePrefix, create: func() formatter.ICsvHeader { return &stime.Time{} }},
+	{prefix: dtd.SnowflakeDatetimeSignaturePrefix, create: func() formatter.ICsvHeader { return &dtd.Datetime{} }},
+	{prefix: dtntz.SnowflakeTimestampNoTimeZoneSignaturePrefix, create: func() formatter.ICsvHeader { return &dtntz.TimestampNtz{} }},
+	{prefix: dtltz.SnowflakeTimestampLocalTimeZoneSignaturePrefix, create: func() formatter.ICsvHeader { return &dtltz.TimestampLtz{} }},
+	{prefix: dttz.SnowflakeTimestampTimeZoneSignaturePrefix, create: func() formatter.ICsvHeader { return &dttz.TimestampTz{} }},
 }
 
 var _ formatter.IReader = &CsvlReader{}

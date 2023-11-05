@@ -1,4 +1,6 @@
-package timestamp
+package datetime
+
+//DATETIME is an alias for TIMESTAMP_NTZ: https://docs.snowflake.com/en/sql-reference/data-types-datetime#datetime
 
 import (
 	"fmt"
@@ -8,18 +10,17 @@ import (
 	"time"
 
 	"github.com/tsanton/dbt-unit-test-fusionizer/formatter"
-	"github.com/tsanton/dbt-unit-test-fusionizer/utilities"
 )
 
-var _ formatter.ICsvHeader = &Timestamp{}
+var _ formatter.ICsvHeader = &Datetime{}
 
 // Signature must contains "[boolean" (case insensitive) at any position and ends with ")]"
-var snowflakeTimestampSignatureRegex = regexp.MustCompile(`^(\w+)\[timestamp\((.*?)\)\]$`)
+var datetimeSignatureRegex = regexp.MustCompile(`(?i)^(\w+)\[datetime\((.*?)\)\]$`)
 
 const (
-	SnowflakeTimestampSignaturePrefix = "[timestamp("
-	defaultTimestampFormat            = "2006-01-02 15:04:05"
-	defaultPrecision                  = 9
+	SnowflakeDatetimeSignaturePrefix = "[datetime("
+	defaultTimestampFormat           = "2006-01-02 15:04:05"
+	defaultPrecision                 = 9
 )
 
 var timestampFormatMapper = map[string]string{
@@ -51,19 +52,19 @@ var timestampFormatMapper = map[string]string{
 	"MM/dd/yyyyTHH:mm:ss":      "01/02/2006T15:04:05",      // Example: "10/24/2023T14:30:45"
 }
 
-type Timestamp struct {
+type Datetime struct {
 	fieldName          string
 	format             string
 	timestampSignature string
 }
 
 // GetName implements formatter.ICsvHeader
-func (t *Timestamp) GetName() string {
+func (t *Datetime) GetName() string {
 	return t.fieldName
 }
 
 // GetWriter implements formatter.ICsvHeader.
-func (t *Timestamp) GetWriter() func(value interface{}) ([]byte, error) {
+func (t *Datetime) GetWriter() func(value interface{}) ([]byte, error) {
 	return func(value interface{}) ([]byte, error) {
 		// Parse the timestamp based on the specified format
 		timestamp, err := time.Parse(t.format, value.(string))
@@ -75,15 +76,15 @@ func (t *Timestamp) GetWriter() func(value interface{}) ([]byte, error) {
 		timestampString := timestamp.Format(defaultTimestampFormat)
 
 		// Return the formatted timestamp string with the appropriate Snowflake type and alias
-		return []byte(fmt.Sprintf("'%s'::%s AS %s", timestampString, t.timestampSignature, strings.ToUpper(t.fieldName))), nil
+		return []byte(fmt.Sprintf("'%s'::%s AS %s", timestampString, t.timestampSignature, t.fieldName)), nil
 	}
 }
 
 // TODO: refactor
 // GetWriter implements formatter.ICsvHeader.
-func (t *Timestamp) ParseHeader(signature string) error {
+func (t *Datetime) ParseHeader(signature string) error {
 	if !strings.HasSuffix(signature, "]") {
-		return fmt.Errorf("invalid signature '%s'. Signature should be of the form <name>[timestamp(<optional-format>,<optional-precision>,<optional-type>)]", signature)
+		return fmt.Errorf("invalid signature '%s'. Signature should be of the form <name>[datetime(<optional-format>,<optional-precision>)]", signature)
 	}
 
 	// Check for unbalanced parentheses
@@ -92,16 +93,16 @@ func (t *Timestamp) ParseHeader(signature string) error {
 	}
 
 	// Extract the regex matches
-	matches := snowflakeTimestampSignatureRegex.FindStringSubmatch(signature)
+	matches := datetimeSignatureRegex.FindStringSubmatch(signature)
 
 	if len(matches) != 3 {
-		return fmt.Errorf("invalid signature '%s'. Expected () or (<optional-format>,<optional-precision>,<optional-type>)", signature)
+		return fmt.Errorf("invalid signature '%s'. Expected () or (<optional-format>,<optional-precision>)", signature)
 	}
 
 	// Count arguments in parentheses
 	args := strings.Count(matches[2], ",")
-	if args > 2 {
-		return fmt.Errorf("invalid signature '%s'. Expected () or (<optional-format>,<optional-precision>,<optional-type>)", signature)
+	if args > 1 {
+		return fmt.Errorf("invalid signature '%s'. Expected () or (<optional-format>,<optional-precision>)", signature)
 	}
 
 	var err error
@@ -132,14 +133,7 @@ func (t *Timestamp) ParseHeader(signature string) error {
 		precision = defaultPrecision
 	}
 
-	if len(params) > 2 && strings.TrimSpace(params[2]) != "" {
-		if !utilities.Contains([]string{"NTZ", "LTZ", "TZ"}, strings.TrimSpace(params[2])) {
-			return fmt.Errorf("unknown timestamp type '%s' in signature '%s'. Expected 'TZ', 'LTZ', 'NTZ' or empty", strings.TrimSpace(params[2]), signature)
-		}
-		t.timestampSignature = fmt.Sprintf("TIMESTAMP_%s(%d)", strings.TrimSpace(params[2]), precision)
-	} else {
-		t.timestampSignature = fmt.Sprintf("TIMESTAMP(%d)", precision)
-	}
+	t.timestampSignature = fmt.Sprintf("DATETIME(%d)", precision)
 
 	t.fieldName = strings.ToUpper(strings.TrimSpace(matches[1]))
 

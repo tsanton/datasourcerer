@@ -33,7 +33,7 @@ func Test_Varchar_ParseCsvHeaders(t *testing.T) {
 	}
 }
 
-func Test_Varchar_Read_Annotated(t *testing.T) {
+func Test_Varchar_ReadAnnotated(t *testing.T) {
 	t.Parallel()
 	data := strings.TrimSpace(`
 Name,Address[varchar()],City[varchar(50)]
