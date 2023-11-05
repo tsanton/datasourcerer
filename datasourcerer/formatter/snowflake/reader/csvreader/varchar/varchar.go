@@ -12,14 +12,14 @@ import (
 var _ formatter.ICsvHeader = &Varchar{}
 
 // Signature must contains "[varchar" (case insensitive) at any position and ends with ")]"
-var varcharSignatureRegex = regexp.MustCompile(`^(\w+)\[varchar\((.*?)\)\]$`)
+var varcharSignatureRegex = regexp.MustCompile(`(?i)^(\w+)\[varchar\((.*?)\)\]$`)
 
 const (
 	SnowflakeVarcharSignaturePrefix = "[varchar("
 	defaultBytes                    = 16777216
 )
 
-// Varchar are signified with "[varchar]". It is also default if no [<type>] is spesified
+// Varchar is signified with "[varchar()]". It is also default if no [<type>] is spesified
 type Varchar struct {
 	fieldName string
 	bytes     int

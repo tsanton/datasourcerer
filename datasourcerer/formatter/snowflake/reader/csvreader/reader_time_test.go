@@ -32,7 +32,7 @@ func Test_Time_ParseCsvHeaders(t *testing.T) {
 	}
 }
 
-func Test_Time_Read_Annotated(t *testing.T) {
+func Test_Time_ReadCsv(t *testing.T) {
 	t.Parallel()
 	data := strings.TrimSpace(`
 "CreatedAt[time()]","UpdatedAt[time(HH:mm:ssZ)]","DeletedAt[time(HH:mm:ss,4)]"

@@ -10,7 +10,7 @@ import (
 	"github.com/tsanton/dbt-unit-test-fusionizer/formatter/snowflake/reader/csvreader/boolean"
 )
 
-func Test_Bool_ParseCsvHeaders(t *testing.T) {
+func Test_Boolean_ParseCsvHeaders(t *testing.T) {
 	tests := []struct {
 		name  string
 		input []string
@@ -32,7 +32,7 @@ func Test_Bool_ParseCsvHeaders(t *testing.T) {
 	}
 }
 
-func Test_Boolean_Read_Annotated(t *testing.T) {
+func Test_Boolean_ReadCsv(t *testing.T) {
 	t.Parallel()
 	data := strings.TrimSpace(`
 "Handsome[boolean()]","Ugly[boolean(T)]","Weird[boolean(TRUE,FALSE)]"

@@ -11,8 +11,8 @@ import (
 
 var _ formatter.ICsvHeader = &Date{}
 
-// Signature must contains "[boolean" (case insensitive) at any position and ends with ")]"
-var snowflakeDateSignatureRegex = regexp.MustCompile(`^(\w+)\[date\((.*?)\)\]$`)
+// Signature must contains "[date" (case insensitive) at any position and ends with ")]"
+var dateSignatureRegex = regexp.MustCompile(`(?i)^(\w+)\[date\((.*?)\)\]$`)
 
 const (
 	SnowflakeDateSignaturePrefix = "[date("
@@ -65,7 +65,7 @@ func (d *Date) ParseHeader(signature string) error {
 	}
 
 	// Extract the regex matches// Extract the regex matches
-	matches := snowflakeDateSignatureRegex.FindStringSubmatch(signature)
+	matches := dateSignatureRegex.FindStringSubmatch(signature)
 
 	if len(matches) != 3 {
 		return fmt.Errorf("invalid signature '%s'. Expected () or (<format>)", signature)

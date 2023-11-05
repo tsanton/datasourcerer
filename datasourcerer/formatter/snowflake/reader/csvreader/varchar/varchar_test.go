@@ -24,6 +24,13 @@ func Test_Varchar(t *testing.T) {
 			expectedWriterOutput: "'bar'::VARCHAR(16777216) AS FOO",
 		},
 		{
+			name:                 "Test_Varchar_DefaultAnnotation",
+			header:               "Baz[VarchaR()]",
+			input:                "bar",
+			expectedHeaderName:   "BAZ",
+			expectedWriterOutput: "'bar'::VARCHAR(16777216) AS BAZ",
+		},
+		{
 			name:                 "Test_Varchar_NoAnnotation",
 			header:               "foo",
 			input:                "bar",

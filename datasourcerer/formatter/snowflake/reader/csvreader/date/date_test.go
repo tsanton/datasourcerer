@@ -24,6 +24,13 @@ func Test_Date(t *testing.T) {
 			expectedWriterOutput: "'2000-12-31'::DATE AS FOO",
 		},
 		{
+			name:                 "Test_Date_AnnotationCaseInsensitive",
+			header:               "Bar[DatE()]",
+			input:                "2000-12-31",
+			expectedHeaderName:   "BAR",
+			expectedWriterOutput: "'2000-12-31'::DATE AS BAR",
+		},
+		{
 			name:                 "Test_Date_AnnotatedNormal",
 			header:               "foo[date(yyyy/MM/dd)]",
 			input:                "2000/12/31",

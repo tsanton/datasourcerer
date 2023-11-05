@@ -13,7 +13,7 @@ import (
 var _ formatter.ICsvHeader = &Time{}
 
 // Signature must contain "[time" (case insensitive) at any position and ends with ")]"
-var timeSignatureRegex = regexp.MustCompile(`^(\w+)\[time\((.*?)\)\]$`)
+var timeSignatureRegex = regexp.MustCompile(`^(?i)(\w+)\[time\((.*?)\)\]$`)
 
 const (
 	SnowflakeTimeSignaturePrefix = "[time("

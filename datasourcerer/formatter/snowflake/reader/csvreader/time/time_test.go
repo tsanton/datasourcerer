@@ -24,6 +24,13 @@ func Test_Time(t *testing.T) {
 			expectedWriterOutput: "'23:59:59'::TIME(9) AS FOO",
 		},
 		{
+			name:                 "Test_Time_AnnotationCaseInsensitive",
+			header:               "Bar[TimE()]",
+			input:                "23:59:59",
+			expectedHeaderName:   "BAR",
+			expectedWriterOutput: "'23:59:59'::TIME(9) AS BAR",
+		},
+		{
 			name:                 "Test_Time_CustomFormat",
 			header:               "foo[time(HH:mm:ss.SSS)]",
 			input:                "23:59:59.123",

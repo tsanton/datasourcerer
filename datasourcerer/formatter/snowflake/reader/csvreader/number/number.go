@@ -12,7 +12,7 @@ import (
 var _ formatter.ICsvHeader = &Number{}
 
 // Signature must contains "[number" (case insensitive) at any position and ends with ")]"
-var snowflakeNumberSignatureRegex = regexp.MustCompile(`^(\w+)\[number\((.*?)\)\]$`)
+var numberSignatureRegex = regexp.MustCompile(`(?i)^(\w+)\[number\((.*?)\)\]$`)
 
 const (
 	SnowflakeNumberSignaturePrefix = "[number("
@@ -61,7 +61,7 @@ func (n *Number) ParseHeader(signature string) error {
 	}
 
 	// Extract the regex matches
-	matches := snowflakeNumberSignatureRegex.FindStringSubmatch(signature)
+	matches := numberSignatureRegex.FindStringSubmatch(signature)
 
 	if len(matches) != 3 {
 		return fmt.Errorf("invalid signature '%s'. Expected () or (<optional-precision>,<optional-scale>)", signature)

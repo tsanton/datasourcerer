@@ -32,7 +32,7 @@ func Test_Date_ParseCsvHeaders(t *testing.T) {
 	}
 }
 
-func Test_Date_Read_Annotated(t *testing.T) {
+func Test_Date_ReadCsv(t *testing.T) {
 	t.Parallel()
 	data := strings.TrimSpace(`
 "DateOfBirth[date()]","WeddingDate[date(MM/dd/yyyy)]","DivorseDate[date(dd MMM yyyy)]"

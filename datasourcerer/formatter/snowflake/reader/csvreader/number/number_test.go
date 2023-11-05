@@ -24,6 +24,13 @@ func Test_Number(t *testing.T) {
 			expectedWriterOutput: "12.2::NUMBER(38,2) AS FOO",
 		},
 		{
+			name:                 "Test_Number_AnnotationCaseInsensitive",
+			header:               "Bar[NumbeR()]",
+			input:                "12.2",
+			expectedHeaderName:   "BAR",
+			expectedWriterOutput: "12.2::NUMBER(38,2) AS BAR",
+		},
+		{
 			name:                 "Test_Integer_Annotated",
 			header:               "foo[number(14,0)]",
 			input:                "10",
