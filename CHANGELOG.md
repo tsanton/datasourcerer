@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.3.0](https://github.com/tsanton/datasourcerer/compare/0.2.1...0.3.0) (2023-11-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* changed flags and added path tests
+
+### Code Refactoring
+
+* changed flags and added path tests ([9868be5](https://github.com/tsanton/datasourcerer/commit/9868be531439ccc1fc9252882cd8976e27ce34e8))
+
 ## [0.2.1](https://github.com/tsanton/datasourcerer/compare/0.2.0...0.2.1) (2023-11-05)
 
 
