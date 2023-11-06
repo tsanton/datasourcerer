@@ -67,7 +67,7 @@ func main() {
 	}
 
 	c := make(chan templatecrawler.DataSourceReference)
-	crawler := templatecrawler.NewTestTemplateCrawler(logger, run.crawlers, run.templateFileDir)
+	crawler := templatecrawler.NewTestTemplateCrawler(logger, run.crawlers, run.templateDir)
 
 	var dataSources *map[string]datasourceparser.DataSourceFile
 	switch run.config.Dialect {
@@ -98,7 +98,7 @@ func main() {
 
 	//Generate the dbt files with formatted inputted data
 	templates := crawler.GetTestTemplates()
-	generator := generator.NewTestGenerator(logger, run.generators, run.testFileDir)
+	generator := generator.NewTestGenerator(logger, run.generators, run.unitTestDir)
 	_ = generator.Generate(templates, dataSources)
 	logger.Info("Finished")
 }

@@ -1,11 +1,9 @@
-package main_test
+package main
 
 import (
 	"flag"
 	"os"
 	"testing"
-
-	main "github.com/tsanton/dbt-unit-test-fusionizer"
 )
 
 func Test_Cases(t *testing.T) {
@@ -13,7 +11,7 @@ func Test_Cases(t *testing.T) {
 	origArgs := os.Args
 	defer func() { os.Args = origArgs }()
 
-	cases := main.Cases{}
+	cases := Cases{}
 
 	// Set up command line arguments for the test
 	os.Args = []string{"cmd", "--case=foo", "-case=bar", "--c=baz", "-c=qux"}
