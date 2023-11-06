@@ -57,45 +57,52 @@ func (s *Generator) Generate(testTemplateFiles *[]templatecrawler.TestTemplateFi
 			}
 		}()
 	}
-
-	//TODO: now it's a blobal datasources -> we must move this into the for loop and only scope out the datasources for the current test template
-	lastDataSourceTouched := time.Date(1900, time.January, 1, 0, 0, 0, 0, time.UTC)
-	for _, ds := range *dataSourceFiles {
-		if ds.LastChanged().After(lastDataSourceTouched) {
-			lastDataSourceTouched = ds.LastChanged()
-		}
-	}
-	s.logger.Debug(fmt.Sprintf("data source was last updated: '%s'", lastDataSourceTouched.Format(time.RFC3339)))
-
 	s.logger.Info(fmt.Sprintf("total of %d test template(s) found", len(*testTemplateFiles)))
 	for _, templateFile := range *testTemplateFiles {
+		templateFileCopy := templateFile
+		lastDataSourceTouched := time.Date(1900, time.January, 1, 0, 0, 0, 0, time.UTC)
+		for _, ref := range *templateFile.DataSourceReferences() {
+			ds := (*dataSourceFiles)[ref.DataSourceFilePath]
+			if ds.LastChanged().After(lastDataSourceTouched) {
+				lastDataSourceTouched = ds.LastChanged()
+			}
+		}
+		s.logger.Debug(fmt.Sprintf("data source was last updated: '%s'", lastDataSourceTouched.Format(time.RFC3339)))
+
 		testFilePath := path.Join(s.outputAbsDir, templateFile.RelativeFilePath())
 		exist, testFileLastUpdated := fileLastTouched(testFilePath)
 		s.logger.Debug(fmt.Sprintf("test file '%s' exist: %t.", testFilePath, exist))
 		if !exist {
 			s.logger.Debug(fmt.Sprintf("test file '%s' does not exist. Creating...", testFilePath))
 			wg.Add(1)
-			jobs <- mergeFileJob{
-				testFilePath:     testFilePath,
-				testTemplateFile: &templateFile,
-				dataSources:      dataSourceFiles,
-			}
+			go func(tf templatecrawler.TestTemplateFile) {
+				jobs <- mergeFileJob{
+					testFilePath:     testFilePath,
+					testTemplateFile: &tf,
+					dataSources:      dataSourceFiles,
+				}
+			}(templateFileCopy)
+
 		} else if lastDataSourceTouched.After(templateFile.LastChanged()) && lastDataSourceTouched.After(testFileLastUpdated) {
 			s.logger.Debug("data source file(s) altered after last test template generation. Recreating...")
 			wg.Add(1)
-			jobs <- mergeFileJob{
-				testFilePath:     testFilePath,
-				testTemplateFile: &templateFile,
-				dataSources:      dataSourceFiles,
-			}
+			go func(tf templatecrawler.TestTemplateFile) {
+				jobs <- mergeFileJob{
+					testFilePath:     testFilePath,
+					testTemplateFile: &tf,
+					dataSources:      dataSourceFiles,
+				}
+			}(templateFileCopy)
 		} else if testFileLastUpdated.Before(templateFile.LastChanged()) {
 			s.logger.Debug("test template was altered after the last test generation. Recreating...")
 			wg.Add(1)
-			jobs <- mergeFileJob{
-				testFilePath:     testFilePath,
-				testTemplateFile: &templateFile,
-				dataSources:      dataSourceFiles,
-			}
+			go func(tf templatecrawler.TestTemplateFile) {
+				jobs <- mergeFileJob{
+					testFilePath:     testFilePath,
+					testTemplateFile: &tf,
+					dataSources:      dataSourceFiles,
+				}
+			}(templateFileCopy)
 		} else {
 			s.logger.Debug(fmt.Sprintf("test file '%s' does not need regeneration", testFilePath))
 		}
@@ -163,14 +170,14 @@ func (s *Generator) mergeFiles(targetFilePath string, templateFile *templatecraw
 			}
 
 			if lo.Contains(wrappedLines, sourceLineIndex) {
-				s.logger.Debug(fmt.Sprintf("handling wrapped call and endline data insert in file '%s', line %d", targetFilePath, sourceLineIndex))
+				s.logger.Debug(fmt.Sprintf("inserting wrapped data source '%s' in file '%s', line %d", dsr.DataSourceFilePath, targetFilePath, sourceLineIndex))
 				err = handleWrappedLine(targetWriter, line, &dsr, dataSources)
 				if err != nil {
 					s.logger.Debug(fmt.Sprintf("error handling wrapped call and endline data insert in file '%s', line %d. Error: %s", targetFilePath, sourceLineIndex, err.Error()))
 					return err
 				}
 			} else {
-				s.logger.Debug(fmt.Sprintf("inserting data source in file '%s', line %d", targetFilePath, sourceLineIndex))
+				s.logger.Debug(fmt.Sprintf("inserting data source '%s' in file '%s', line %d", dsr.DataSourceFilePath, targetFilePath, sourceLineIndex))
 				err = insertDataSource(targetWriter, &dsr, dataSources)
 				if err != nil {
 					s.logger.Debug(fmt.Sprintf("error inserting data source in file: '%s', line: %d. Error: %s", targetFilePath, sourceLineIndex, err.Error()))
@@ -208,7 +215,7 @@ func fileLastTouched(filePath string) (bool, time.Time) {
 }
 
 // handle same line call and endcall: {% call ..... %}{% endcall %}
-func handleWrappedLine(targetWriter *bufio.Writer, line string, dataSourceReference *templatecrawler.DataSourceReference, dataSources *map[string]datasourceparser.DataSourceFile) error {
+func handleWrappedLine(targetWriter *bufio.Writer, line string, dsr *templatecrawler.DataSourceReference, dataSources *map[string]datasourceparser.DataSourceFile) error {
 	endRegex := regexp.MustCompile(regexp.QuoteMeta("{% endcall %}"))
 	loc := endRegex.FindStringIndex(line)
 	if loc == nil {
@@ -225,7 +232,7 @@ func handleWrappedLine(targetWriter *bufio.Writer, line string, dataSourceRefere
 			return err
 		}
 
-		ds := (*dataSources)[dataSourceReference.DataSourceFilePath]
+		ds := (*dataSources)[dsr.DataSourceFilePath]
 		if err := ds.Formatter.Write(targetWriter); err != nil {
 			return err
 		}
@@ -239,7 +246,7 @@ func handleWrappedLine(targetWriter *bufio.Writer, line string, dataSourceRefere
 	}
 }
 
-func insertDataSource(targetWriter *bufio.Writer, dataSourceReference *templatecrawler.DataSourceReference, dataSources *map[string]datasourceparser.DataSourceFile) error {
-	ds := (*dataSources)[dataSourceReference.DataSourceFilePath]
+func insertDataSource(targetWriter *bufio.Writer, dsr *templatecrawler.DataSourceReference, dataSources *map[string]datasourceparser.DataSourceFile) error {
+	ds := (*dataSources)[dsr.DataSourceFilePath]
 	return ds.Formatter.Write(targetWriter)
 }

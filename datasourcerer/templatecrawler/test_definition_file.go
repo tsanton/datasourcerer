@@ -131,7 +131,7 @@ func (s *TestTemplateFile) parseFile(file io.ReadCloser) error {
 				} else {
 					sourceFile, _ = filepath.Abs(filepath.Join(s.absFileDir, sourceMatches[1]))
 				}
-				s.logger.Debug(fmt.Sprintf("source file '%s' referenced in test template file %s", sourceFile, s.AbsFilePath()))
+				s.logger.Debug(fmt.Sprintf("source file '%s' referenced in test template file '%s'", sourceFile, s.AbsFilePath()))
 			}
 			dbtInputFormatMatches := dbtInputFormatRegex.FindStringSubmatch(line)
 			if len(dbtInputFormatMatches) >= 2 {

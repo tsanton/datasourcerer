@@ -74,7 +74,7 @@ func (r *mainConfig) configureDefaults(logger *slog.Logger) error {
 		} else {
 			r.templateDir = path.Join(executablePath, "test-templates")
 		}
-		logger.Debug(fmt.Sprintf("Using '%s' as the template directory location", r.templateDir))
+		logger.Debug(fmt.Sprintf("using '%s' as the template directory location", r.templateDir))
 	} else {
 		// If 'templateDir' is provided, determine if it's absolute or relative.
 		if filepath.IsAbs(r.templateDir) {
