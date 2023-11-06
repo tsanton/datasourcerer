@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/tsanton/datasourcerer/compare/0.3.0...0.3.1) (2023-11-06)
+
+
+### Bug Fixes
+
+* default test path from 'test/unit' to 'tests/unit' ([e7ef30f](https://github.com/tsanton/datasourcerer/commit/e7ef30f0d67424b23c5f5598b627a3e37ceb5120))
+
 ## [0.3.0](https://github.com/tsanton/datasourcerer/compare/0.2.1...0.3.0) (2023-11-06)
 
 
