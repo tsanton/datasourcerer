@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.2](https://github.com/tsanton/datasourcerer/compare/0.3.1...0.3.2) (2023-11-06)
+
+
+### Bug Fixes
+
+* threadsafe concurrent generator ([65cccaa](https://github.com/tsanton/datasourcerer/commit/65cccaa8330c1875056b8615cf4d68babe6df527))
+
 ## [0.3.1](https://github.com/tsanton/datasourcerer/compare/0.3.0...0.3.1) (2023-11-06)
 
 
