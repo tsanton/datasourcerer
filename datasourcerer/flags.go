@@ -43,7 +43,7 @@ type mainConfig struct {
 func configureFlags() *mainConfig {
 	cfg := &mainConfig{}
 	flag.StringVar(&cfg.templateDir, "template-dir", "", "The directory to read template files from. Defaults to <DBT_PROJECT_DIR>/test-templates/")
-	flag.StringVar(&cfg.unitTestDir, "test-dir", "", "The directory to output templated files. Defaults to <DBT_PROJECT_DIR>/test/unit/")
+	flag.StringVar(&cfg.unitTestDir, "test-dir", "", "The directory to output templated files. Defaults to <DBT_PROJECT_DIR>/tests/unit/")
 	flag.StringVar(&cfg.configPath, "config-file", "", "The path to the datasourcerer config file. Defaults to <DBT_PROJECT_DIR>/.datasourcerer.yaml")
 	flag.IntVar(&cfg.workers, "workers", 10, "How many workers to use. Will override the 'crawlers', 'parsers' and 'generators' flags. Defaults to 10")
 	flag.IntVar(&cfg.crawlers, "crawlers", 10, "How many crawlers to run in parallell when parsing test templates, Defaults to 10")
@@ -104,9 +104,9 @@ func (r *mainConfig) configureDefaults(logger *slog.Logger) error {
 	if r.unitTestDir == "" {
 		// If 'unitTestDir' is not provided, determine the default directory.
 		if dbtProjectDir != "" {
-			r.unitTestDir = path.Join(dbtProjectDir, "test/unit")
+			r.unitTestDir = path.Join(dbtProjectDir, "tests/unit")
 		} else {
-			r.unitTestDir = path.Join(executablePath, "test/unit")
+			r.unitTestDir = path.Join(executablePath, "tests/unit")
 		}
 		logger.Debug(fmt.Sprintf("Using '%s' as the unit test directory location", r.unitTestDir))
 	} else {
